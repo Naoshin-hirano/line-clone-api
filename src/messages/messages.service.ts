@@ -1,5 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { CreateMessageDto } from './dto/create.message.dto';
 import { Message } from './message.model';
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class MessagesService {
@@ -11,10 +13,17 @@ export class MessagesService {
 
     findById(id: string): Message {
         const found = this.messages.find((item) => item.id === id);
+        if (!found) {
+            throw new NotFoundException("メッセージが見つかりません");
+        }
         return found;
     }
 
-    create(message: Message): Message {
+    create(createMessageDto: CreateMessageDto): Message {
+        const message: Message = {
+            id: uuid(),
+            ...createMessageDto
+        };
         this.messages.push(message);
         return message;
     }

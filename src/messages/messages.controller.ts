@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post } from '@nestjs/common';
+import { CreateMessageDto } from './dto/create.message.dto';
 import { Message } from './message.model';
 import { MessagesService } from './messages.service';
 
@@ -11,29 +12,22 @@ export class MessagesController {
         return this.messagesService.findAll();
     }
 
+    // ParseUUIDPipe: idがuuid形式でリクエストされているかのバリデーション
     @Get(':id')
-    findById(@Param('id') id: string): Message {
+    findById(@Param('id', ParseUUIDPipe) id: string): Message {
         return this.messagesService.findById(id);
     }
 
     @Post()
     create(
-        @Body('id') id: string,
-        @Body('postText') postText: string,
-        @Body('username') username: string,
+        @Body() createMessageDto: CreateMessageDto,
     ): Message {
-        const message: Message = {
-            id,
-            postText,
-            username,
-        };
-
-        return this.messagesService.create(message);
+        return this.messagesService.create(createMessageDto);
     };
 
     @Patch(':id')
     update(
-        @Param('id') id: string,
+        @Param('id', ParseUUIDPipe) id: string,
         @Body('postText') postText: string,
     ): Message {
         return this.messagesService.update(id, postText);
@@ -41,7 +35,7 @@ export class MessagesController {
 
     @Delete(':id')
     delete(
-        @Param('id') id: string,
+        @Param('id', ParseUUIDPipe) id: string,
     ): string {
         return this.messagesService.delete(id);
     }
