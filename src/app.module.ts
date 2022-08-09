@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MessagesModule } from './messages/messages.module';
+import { AuthModule } from './auth/auth.module';
 import entities from './typeorm';
 
 @Module({
     imports: [
         MessagesModule,
+        AuthModule,
         TypeOrmModule.forRoot({
             type: 'mysql',
             host: 'localhost',
@@ -15,7 +17,7 @@ import entities from './typeorm';
             database: 'line_clone',
             entities,
             synchronize: true,
-        })],
+        }),],
     controllers: [],
     providers: [],
 })
