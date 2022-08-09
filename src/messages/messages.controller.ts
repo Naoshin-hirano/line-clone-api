@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post } from '@nestjs/common';
 import { CreateMessageDto } from './dto/create.message.dto';
-import { Message } from './message.model';
+import { Message } from '../typeorm/message';
 import { MessagesService } from './messages.service';
 
 @Controller('messages')
@@ -8,35 +8,35 @@ export class MessagesController {
     constructor(private readonly messagesService: MessagesService) { }
 
     @Get()
-    findAll(): Message[] {
-        return this.messagesService.findAll();
-    }
+    async findAll(): Promise<Message[]> {
+        return await this.messagesService.findAll();
+    };
 
     // ParseUUIDPipe: idがuuid形式でリクエストされているかのバリデーション
     @Get(':id')
-    findById(@Param('id', ParseUUIDPipe) id: string): Message {
-        return this.messagesService.findById(id);
-    }
+    async findById(@Param('id', ParseUUIDPipe) id: string): Promise<Message> {
+        return await this.messagesService.findById(id);
+    };
 
     @Post()
-    create(
+    async create(
         @Body() createMessageDto: CreateMessageDto,
-    ): Message {
-        return this.messagesService.create(createMessageDto);
+    ): Promise<Message> {
+        return await this.messagesService.create(createMessageDto);
     };
 
     @Patch(':id')
-    update(
+    async update(
         @Param('id', ParseUUIDPipe) id: string,
         @Body('postText') postText: string,
-    ): Message {
-        return this.messagesService.update(id, postText);
-    }
+    ): Promise<Message> {
+        return await this.messagesService.update(id, postText);
+    };
 
     @Delete(':id')
-    delete(
+    async delete(
         @Param('id', ParseUUIDPipe) id: string,
-    ): string {
+    ): Promise<string> {
         return this.messagesService.delete(id);
-    }
+    };
 }

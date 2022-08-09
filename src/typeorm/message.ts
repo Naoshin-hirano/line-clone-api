@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 // typescriptでのモデルのようなもの
 @Entity()
-export class Messages {
+export class Message {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 

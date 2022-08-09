@@ -1,6 +1,6 @@
-import { Messages } from "./message";
+import { Message } from "./message";
 
-const entities = [Messages];
-export { Messages };
+const entities = [Message];
+export { Message };
 
 export default entities;
