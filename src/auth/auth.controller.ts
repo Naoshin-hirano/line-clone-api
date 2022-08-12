@@ -2,6 +2,7 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { User } from 'src/typeorm/user';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create.user.dto';
+import { CredentialsDto } from './dto/credentials.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -14,4 +15,12 @@ export class AuthController {
     ): Promise<User> {
         return await this.authService.singUp(createUserDto);
     };
+
+    @Post('signin')
+    async signIn(
+        @Body()
+        credentialsDto: CredentialsDto
+    ): Promise<{ accessToken: string }> {
+        return await this.authService.signIn(credentialsDto);
+    }
 };
