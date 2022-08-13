@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateMessageDto } from './dto/create.message.dto';
 import { Message } from '../typeorm/message';
 import { MessageRepository } from './message.repository';
+import { User } from 'src/typeorm';
 
 @Injectable()
 export class MessagesService {
@@ -20,8 +21,11 @@ export class MessagesService {
         return found;
     };
 
-    async create(createMessageDto: CreateMessageDto): Promise<Message> {
-        return await this.messageRepository.createMessage(createMessageDto);
+    async create(
+        createMessageDto: CreateMessageDto,
+        user: User,
+    ): Promise<Message> {
+        return await this.messageRepository.createMessage(createMessageDto, user);
     };
 
     async update(id: string, postText: string): Promise<Message> {
