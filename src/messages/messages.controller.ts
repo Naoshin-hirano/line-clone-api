@@ -1,11 +1,13 @@
-import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post, UseInterceptors } from '@nestjs/common';
 import { CreateMessageDto } from './dto/create.message.dto';
 import { Message } from '../typeorm/message';
 import { MessagesService } from './messages.service';
 import { GetUser } from 'src/auth/decorator/get-user.decorator';
 import { User } from 'src/typeorm';
 
+// UseInterceptors： intercepter系メソッド(Excludeなど)を使用できる
 @Controller('messages')
+@UseInterceptors(ClassSerializerInterceptor)
 export class MessagesController {
     constructor(private readonly messagesService: MessagesService) { }
 
