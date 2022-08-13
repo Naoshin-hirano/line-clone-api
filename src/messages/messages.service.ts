@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateMessageDto } from './dto/create.message.dto';
 import { Message } from '../typeorm/message';
 import { MessageRepository } from './message.repository';
@@ -36,7 +36,11 @@ export class MessagesService {
         return message;
     };
 
-    async delete(id: string): Promise<string> {
+    async delete(id: string, user: User): Promise<string> {
+        const message = await this.findById(id);
+        if (message.userId !== user.id) {
+            throw new BadRequestException('他ユーザーのメッセージは削除できません');
+        }
         await this.messageRepository.delete({ id });
         return '削除完了しました';
     };

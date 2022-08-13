@@ -45,7 +45,8 @@ export class MessagesController {
     @UseGuards(JwtAuthGuard)
     async delete(
         @Param('id', ParseUUIDPipe) id: string,
+        @GetUser() user: User,
     ): Promise<string> {
-        return this.messagesService.delete(id);
+        return this.messagesService.delete(id, user);
     };
 }
