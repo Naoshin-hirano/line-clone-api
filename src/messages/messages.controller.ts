@@ -1,7 +1,8 @@
-import { Body, ClassSerializerInterceptor, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post, UseInterceptors } from '@nestjs/common';
+import { Body, ClassSerializerInterceptor, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post, UseGuards, UseInterceptors } from '@nestjs/common';
 import { CreateMessageDto } from './dto/create.message.dto';
 import { Message } from '../typeorm/message';
 import { MessagesService } from './messages.service';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { GetUser } from 'src/auth/decorator/get-user.decorator';
 import { User } from 'src/typeorm';
 
@@ -23,6 +24,7 @@ export class MessagesController {
     };
 
     @Post()
+    @UseGuards(JwtAuthGuard)
     async create(
         @Body() createMessageDto: CreateMessageDto,
         @GetUser() user: User,
@@ -31,6 +33,7 @@ export class MessagesController {
     };
 
     @Patch(':id')
+    @UseGuards(JwtAuthGuard)
     async update(
         @Param('id', ParseUUIDPipe) id: string,
         @Body('postText') postText: string,
@@ -39,6 +42,7 @@ export class MessagesController {
     };
 
     @Delete(':id')
+    @UseGuards(JwtAuthGuard)
     async delete(
         @Param('id', ParseUUIDPipe) id: string,
     ): Promise<string> {
