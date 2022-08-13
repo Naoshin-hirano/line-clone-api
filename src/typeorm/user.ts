@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Message } from "./message";
 
 @Entity()
 export class User {
@@ -16,4 +17,7 @@ export class User {
 
     @Column()
     updatedAt: string;
+
+    @OneToMany(() => Message, (message) => message.user)
+    messages: Message[];
 }

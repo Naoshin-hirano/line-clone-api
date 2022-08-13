@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "./user";
 // typescriptでのモデルのようなもの
 @Entity()
 export class Message {
@@ -21,4 +22,10 @@ export class Message {
 
     @Column()
     updatedAt: string;
+
+    @ManyToOne(() => User, (user) => user.messages)
+    user: User;
+
+    @Column()
+    userId: string;
 }
